@@ -6,40 +6,56 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <style>
-        #app, #output, h1{
-            margin-top:2.5rem;
-            margin-left:2rem;
+        #app,
+        #output,
+        h1 {
+            margin-top: 2.5rem;
         }
-        #app, #output{
+
+        #app,
+        #output {
             line-height: 2.5;
         }
-        body{
-            font-size:1rem;
+
+        body {
+            font-size: 1rem;
+            margin:2rem;
         }
-        input{
-            width:6rem;
+
+        input {
+            width: 6rem;
             text-align: center;
         }
-        h1{
-            font-size:2.8rem;
+
+        h1 {
+            font-size: 2.8rem;
+            margin:0;
         }
-        select,input{
-            font-size:1rem;
-            height:2rem;
+
+        select,
+        input {
+            font-size: 1rem;
+            height: 2rem;
+        }
+        
+        .fork{
+            font-size:0.8rem;
+            margin-top:1.5rem;
+            display: block;
         }
     </style>
 </head>
 
-<body  class="animated fadeIn">
-    <div class="center">
-            <h1>Entity relational diagram Helper</h1>
-            <p id="output">
-            </p>
-            <div id="app"></div>
-    </div>
-    
+<body class="animated fadeIn">
+    <header>
+        <h1>Entity relational diagram Helper</h1>
+    </header>
+    <p id="output">
+    </p>
+    <div id="app"></div>
+    <a class="fork" href="https://github.com/egoing/ERD-Helper" target="_blank">fork me on github</a>
     <script>
-        function diagram(state){
+        function diagram(state) {
             return `
             <input class="input" type="text" name="entity1" value=${state.entity1}>
             <select>
@@ -66,6 +82,7 @@
             <input class="input" type="text" name="entity2" value=${state.entity2}>
             `;
         }
+
         function entity1_entity2(entity1, entity2, relation, cardinality, ordinality) {
             return `
         <p>
@@ -104,10 +121,10 @@
         var initStore = {
             entity1: '엔티티1',
             entity2: '엔티티2',
-            'entity1_entity2_cadinality':'1',
-            'entity1_entity2_ordinality':'Mandatory',
-            'entity2_entity1_cadinality':'1',
-            'entity2_entity1_ordinality':'Mandatory',
+            'entity1_entity2_cadinality': '1',
+            'entity1_entity2_ordinality': 'Mandatory',
+            'entity2_entity1_cadinality': '1',
+            'entity2_entity1_ordinality': 'Mandatory',
             relation: '관계'
         };
         var reducer = function (state, action) {
@@ -120,12 +137,15 @@
             }
             return newState;
         }
-        var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+        var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window
+            .__REDUX_DEVTOOLS_EXTENSION__());
         store.subscribe(function () {
             var state = store.getState();
             document.querySelector('#app').innerHTML =
-                entity1_entity2(state.entity1, state.entity2, state.relation, state.entity1_entity2_cadinality,state.entity1_entity2_ordinality) +
-                eneity2_entity1(state.entity1, state.entity2, state.relation, state.entity2_entity1_cadinality,state.entity2_entity1_ordinality);
+                entity1_entity2(state.entity1, state.entity2, state.relation, state.entity1_entity2_cadinality,
+                    state.entity1_entity2_ordinality) +
+                eneity2_entity1(state.entity1, state.entity2, state.relation, state.entity2_entity1_cadinality,
+                    state.entity2_entity1_ordinality);
             document.querySelector('#output').innerHTML = diagram(state);
         })
         store.dispatch({
@@ -138,7 +158,6 @@
                 value: event.target.value
             })
         })
-        
     </script>
 </body>
 
