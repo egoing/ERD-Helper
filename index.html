@@ -3,6 +3,7 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <style>
         #graph svg{
             height:63px !important;
@@ -11,10 +12,10 @@
 </head>
 
 <body>
-    <div id="output">
-        
+    <h1 class="animated flipInX">Entity relational diagram Helper</h1>
+    <div id="output" class="animated flipInX">
     </div>
-    <div id="app"></div>
+    <div id="app" class="animated flipInX"></div>
     <script>
         function left2right(entity1, entity2, relation, cardinality, ordinality) {
             return `
