@@ -58,11 +58,11 @@
         function diagram(state) {
             return `
             <input class="input" type="text" name="entity1" value=${state.entity1}>
-            <select>
-                <option ${state.entity2_entity1_cadinality === 'N' ? 'selected' : ''}>&gt;</option>
-                <option ${state.entity2_entity1_cadinality === '1' ? 'selected' : ''}>-</option>
+            <select name="entity2_entity1_cadinality" class="input">
+                <option ${state.entity2_entity1_cadinality === 'N' ? 'selected' : ''} value="N">&gt;</option>
+                <option ${state.entity2_entity1_cadinality === '1' ? 'selected' : ''} value="1">-</option>
             </select>
-            <select>
+            <select name="entity2_entity1_ordinality" class="input">
                 <option ${state.entity2_entity1_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
                 <option ${state.entity2_entity1_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
             </select>
@@ -71,13 +71,13 @@
                 <input class="input" type="text" name="relation" value=${state.relation}>    
             </span>
             -
-            <select>
+            <select name="entity1_entity2_ordinality" class="input">
                 <option ${state.entity1_entity2_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
                 <option ${state.entity1_entity2_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
             </select>
-            <select>
-                <option ${state.entity1_entity2_cadinality === 'N' ? 'selected' : ''}>&lt;</option>
-                <option ${state.entity1_entity2_cadinality === '1' ? 'selected' : ''}>-</option>
+            <select name="entity1_entity2_cadinality" class="input">
+                <option ${state.entity1_entity2_cadinality === 'N' ? 'selected' : ''} value="N">&lt;</option>
+                <option ${state.entity1_entity2_cadinality === '1' ? 'selected' : ''} value="1">-</option>
             </select>
             <input class="input" type="text" name="entity2" value=${state.entity2}>
             `;
@@ -152,6 +152,7 @@
             type: 'init'
         });
         $('body').on('change', '.input', function (event) {
+            console.log(event);
             store.dispatch({
                 type: 'INPUT_CHANGE',
                 name: event.target.name,
