@@ -54,13 +54,13 @@
         `;
         }
         var initStore = {
-            entity1: '댓글',
-            entity2: '저자',
+            entity1: '엔티티1',
+            entity2: '엔티티2',
             'entity1_entity2_cadinality':'1',
             'entity1_entity2_ordinality':'Mandatory',
             'entity2_entity1_cadinality':'1',
             'entity2_entity1_ordinality':'Mandatory',
-            relation: '소속'
+            relation: '관계'
         };
         var reducer = function (state, action) {
             if (action.type === 'init') {
@@ -103,7 +103,7 @@
                     <option ${state.entity1_entity2_cadinality === 'N' ? 'selected' : ''}>&lt;</option>
                     <option ${state.entity1_entity2_cadinality === '1' ? 'selected' : ''}>-</option>
                 </select>
-                <span>${state.entity2}</span>
+                <input class="input" type="text" name="entity2" value=${state.entity2}>
             `;
         })
         store.dispatch({
