@@ -5,17 +5,18 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <style>
-        #graph svg{
-            height:63px !important;
+        #app, #output, h1{
+            margin-top:2rem;
+            margin-left:2rem;
         }
     </style>
 </head>
 
-<body>
-    <h1 class="animated flipInX">Entity relational diagram Helper</h1>
-    <div id="output">
-    </div>
-    <div id="app"></div>
+<body  class="animated fadeIn">
+    <h1>Entity relational diagram Helper</h1>
+    <p id="output">
+    </p>
+    <p id="app"></p>
     <script>
         function left2right(entity1, entity2, relation, cardinality, ordinality) {
             return `
@@ -23,12 +24,12 @@
             <input class="input" type="text" name="entity1" value=${entity1}>는
             <select class="input" name="entity1_entity2_cadinality">
                 <option ${cardinality === '1' ? 'selected' : ''} value="1">하나</option>
-                <option ${cardinality === 'N' ? 'selected' : ''} value="N">여러개</option>
+                <option ${cardinality === 'N' ? 'selected' : ''} value="N">다수</option>
             </select>의
             <input class="input" type="text" name="entity2" value=${entity2}>에
             <select class="input" name="entity1_entity2_ordinality" >
                 <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">반드시</option>
-                <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">어쩌다</option>
+                <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">때때로</option>
             </select>의
             <input class="input" type="text" name="relation" value=${relation}>된다.
         </p>
@@ -41,12 +42,12 @@
             <input class="input" type="text" name="entity2" value=${entity2}>는
             <select class="input" name="entity2_entity1_cadinality">
                 <option ${cardinality === '1' ? 'selected' : ''} value="1">하나</option>
-                <option ${cardinality === 'N' ? 'selected' : ''} value="N">여러개</option>
+                <option ${cardinality === 'N' ? 'selected' : ''} value="N">다수</option>
             </select>의
             <input class="input" type="text" name="entity1" value=${entity1}>에
             <select class="input" name="entity2_entity1_ordinality" >
                 <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">반드시</option>
-                <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">어쩌다</option>
+                <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">때때로</option>
             </select>의
             <input class="input" type="text" name="relation" value=${relation}>된다.
         </p>
@@ -90,7 +91,9 @@
                     <option ${state.entity2_entity1_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
                 </select>
                 -
-                <span>${state.relation}</span>
+                <span>
+                    <input class="input" type="text" name="relation" value=${state.relation}>    
+                </span>
                 -
                 <select>
                     <option ${state.entity1_entity2_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
