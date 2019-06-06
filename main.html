@@ -3,7 +3,6 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="bower_components/mxgraph/javascript/mxClient.min.js"></script>
     <style>
         #graph svg{
             height:63px !important;
@@ -15,17 +14,6 @@
     <div id="graph"></div>
     <div id="app"></div>
     <script>
-        var graph = new mxGraph(document.querySelector('#graph'));
-        new mxRubberband(graph);
-        var parent = graph.getDefaultParent();
-        graph.getModel().beginUpdate();
-        try {
-            var ventity1Vertax1 = graph.insertVertex(parent, null, 'Hello,', 20, 20, 80, 30);
-            var ventity1Vertax2 = graph.insertVertex(parent, null, 'World!', 150, 20, 80, 30);
-            var relationEdge = graph.insertEdge(parent, null, '', ventity1Vertax1, ventity1Vertax2);
-        } finally {
-            graph.getModel().endUpdate();
-        }
         function left2right(entity1, entity2, relation) {
             return `
         <p>
@@ -75,8 +63,6 @@
             document.querySelector('#app').innerHTML =
                 left2right(state.entity1, state.entity2, state.relation) +
                 right2left(state.entity1, state.entity2, state.relation);
-            graph.model.setValue(ventity1Vertax1, state.entity1);
-            graph.model.setValue(ventity1Vertax2, state.entity2);
         })
         store.dispatch({
             type: 'init'
