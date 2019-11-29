@@ -8,18 +8,22 @@
     <style>
         #app,
         #output,
+        #app-eng,
+        #output-eng,
         h1 {
             margin-top: 2.5rem;
         }
 
         #app,
-        #output {
+        #output,
+        #app-eng,
+        #output-eng {
             line-height: 2.5;
         }
 
         body {
             font-size: 1rem;
-            margin:2rem;
+            margin: 2rem;
         }
 
         input {
@@ -27,13 +31,13 @@
             text-align: center;
         }
 
-        header{
-            font-size:0.8rem;
+        header {
+            font-size: 0.8rem;
         }
 
         h1 {
             font-size: 2.8rem;
-            margin:0;
+            margin: 0;
         }
 
         select,
@@ -41,131 +45,286 @@
             font-size: 1rem;
             height: 2rem;
         }
-        
-        .fork{
-            font-size:0.8rem;
-            margin-top:1.5rem;
+
+        .fork {
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
             display: block;
+        }
+
+        #korean {
+            display: block;
+        }
+
+        #english {
+            display: none;
         }
     </style>
 </head>
 
+
+
 <body class="animated fadeIn">
-    <header>
-        <h1>Entity relational diagram Helper</h1>
-        ERD의 cardinality, optionality 관계를 파악할 때 헷갈림을 줄여주기 위해서 만든 교육용 앱입니다. 아래 수업을 통해서 데이터베이스 모델링과 ERD를 만드는 법을 공부할 수 있습니다. <a href="https://opentutorials.org/module/4134">https://opentutorials.org/module/4134</a>
-    </header>
-    <p id="output">
-    </p>
-    <div id="app"></div>
-    <a class="fork" href="https://github.com/egoing/ERD-Helper" target="_blank">fork me on github</a>
-    <script>
-        function diagram(state) {
-            return `
-            <input class="input" type="text" name="entity1" value=${state.entity1}>
-            <select name="entity2_entity1_cadinality" class="input">
-                <option ${state.entity2_entity1_cadinality === 'N' ? 'selected' : ''} value="N">&gt;</option>
-                <option ${state.entity2_entity1_cadinality === '1' ? 'selected' : ''} value="1">-</option>
-            </select>
-            <select name="entity2_entity1_ordinality" class="input">
-                <option ${state.entity2_entity1_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
-                <option ${state.entity2_entity1_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
-            </select>
-            -
-            <span>
-                <input class="input" type="text" name="relation" value=${state.relation}>    
-            </span>
-            -
-            <select name="entity1_entity2_ordinality" class="input">
-                <option ${state.entity1_entity2_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
-                <option ${state.entity1_entity2_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
-            </select>
-            <select name="entity1_entity2_cadinality" class="input">
-                <option ${state.entity1_entity2_cadinality === 'N' ? 'selected' : ''} value="N">&lt;</option>
-                <option ${state.entity1_entity2_cadinality === '1' ? 'selected' : ''} value="1">-</option>
-            </select>
-            <input class="input" type="text" name="entity2" value=${state.entity2}>
+    <select id="languageList" onchange="languageSelector()">
+        <option value="korean">한국어</option>
+        <option value="english">English</option>
+    </select>
+
+    <div id="korean">
+        <header>
+            <h1>Entity relational diagram Helper</h1>
+            ERD의 cardinality, optionality 관계를 파악할 때 헷갈림을 줄여주기 위해서 만든 교육용 앱입니다. 아래 수업을 통해서 데이터베이스 모델링과 ERD를 만드는 법을 공부할 수
+            있습니다. <a href="https://opentutorials.org/module/4134">https://opentutorials.org/module/4134</a>
+        </header>
+        <p id="output">
+        </p>
+        <div id="app"></div>
+        <a class="fork" href="https://github.com/egoing/ERD-Helper" target="_blank">fork me on github</a>
+        <script>
+            function diagram(state) {
+                return `
+                <input class="input" type="text" name="entity1" value=${state.entity1}>
+                <select name="entity2_entity1_cadinality" class="input">
+                    <option ${state.entity2_entity1_cadinality === 'N' ? 'selected' : ''} value="N">&gt;</option>
+                    <option ${state.entity2_entity1_cadinality === '1' ? 'selected' : ''} value="1">-</option>
+                </select>
+                <select name="entity2_entity1_ordinality" class="input">
+                    <option ${state.entity2_entity1_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
+                    <option ${state.entity2_entity1_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
+                </select>
+                -
+                <span>
+                    <input class="input" type="text" name="relation" value=${state.relation}>    
+                </span>
+                -
+                <select name="entity1_entity2_ordinality" class="input">
+                    <option ${state.entity1_entity2_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
+                    <option ${state.entity1_entity2_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
+                </select>
+                <select name="entity1_entity2_cadinality" class="input">
+                    <option ${state.entity1_entity2_cadinality === 'N' ? 'selected' : ''} value="N">&lt;</option>
+                    <option ${state.entity1_entity2_cadinality === '1' ? 'selected' : ''} value="1">-</option>
+                </select>
+                <input class="input" type="text" name="entity2" value=${state.entity2}>
+                `;
+            }
+
+            function entity1_entity2(entity1, entity2, relation, cardinality, ordinality) {
+                return `
+            <p>
+                <input class="input" type="text" name="entity1" value=${entity1}>는
+                <select class="input" name="entity1_entity2_cadinality">
+                    <option ${cardinality === '1' ? 'selected' : ''} value="1">하나</option>
+                    <option ${cardinality === 'N' ? 'selected' : ''} value="N">다수</option>
+                </select>의
+                <input class="input" type="text" name="entity2" value=${entity2}>에
+                <select class="input" name="entity1_entity2_ordinality" >
+                    <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">반드시</option>
+                    <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">때때로</option>
+                </select>의
+                <input class="input" type="text" name="relation" value=${relation}>된다.
+            </p>
             `;
-        }
-
-        function entity1_entity2(entity1, entity2, relation, cardinality, ordinality) {
-            return `
-        <p>
-            <input class="input" type="text" name="entity1" value=${entity1}>는
-            <select class="input" name="entity1_entity2_cadinality">
-                <option ${cardinality === '1' ? 'selected' : ''} value="1">하나</option>
-                <option ${cardinality === 'N' ? 'selected' : ''} value="N">다수</option>
-            </select>의
-            <input class="input" type="text" name="entity2" value=${entity2}>에
-            <select class="input" name="entity1_entity2_ordinality" >
-                <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">반드시</option>
-                <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">때때로</option>
-            </select>의
-            <input class="input" type="text" name="relation" value=${relation}>된다.
-        </p>
-        `;
-        }
-
-        function eneity2_entity1(entity1, entity2, relation, cardinality, ordinality) {
-            return `
-        <p>
-            <input class="input" type="text" name="entity2" value=${entity2}>는
-            <select class="input" name="entity2_entity1_cadinality">
-                <option ${cardinality === '1' ? 'selected' : ''} value="1">하나</option>
-                <option ${cardinality === 'N' ? 'selected' : ''} value="N">다수</option>
-            </select>의
-            <input class="input" type="text" name="entity1" value=${entity1}>에
-            <select class="input" name="entity2_entity1_ordinality" >
-                <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">반드시</option>
-                <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">때때로</option>
-            </select>의
-            <input class="input" type="text" name="relation" value=${relation}>된다.
-        </p>
-        `;
-        }
-        var initStore = {
-            entity1: '엔티티1',
-            entity2: '엔티티2',
-            'entity1_entity2_cadinality': '1',
-            'entity1_entity2_ordinality': 'Mandatory',
-            'entity2_entity1_cadinality': '1',
-            'entity2_entity1_ordinality': 'Mandatory',
-            relation: '관계'
-        };
-        var reducer = function (state, action) {
-            if (action.type === 'init') {
-                return initStore;
             }
-            var newState = Object.assign({}, state);
-            if (action.type === 'INPUT_CHANGE') {
-                newState[action.name] = action.value;
+
+            function eneity2_entity1(entity1, entity2, relation, cardinality, ordinality) {
+                return `
+            <p>
+                <input class="input" type="text" name="entity2" value=${entity2}>는
+                <select class="input" name="entity2_entity1_cadinality">
+                    <option ${cardinality === '1' ? 'selected' : ''} value="1">하나</option>
+                    <option ${cardinality === 'N' ? 'selected' : ''} value="N">다수</option>
+                </select>의
+                <input class="input" type="text" name="entity1" value=${entity1}>에
+                <select class="input" name="entity2_entity1_ordinality" >
+                    <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">반드시</option>
+                    <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">때때로</option>
+                </select>의
+                <input class="input" type="text" name="relation" value=${relation}>된다.
+            </p>
+            `;
             }
-            return newState;
-        }
-        var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window
-            .__REDUX_DEVTOOLS_EXTENSION__());
-        store.subscribe(function () {
-            var state = store.getState();
-            document.querySelector('#app').innerHTML =
-                entity1_entity2(state.entity1, state.entity2, state.relation, state.entity1_entity2_cadinality,
-                    state.entity1_entity2_ordinality) +
-                eneity2_entity1(state.entity1, state.entity2, state.relation, state.entity2_entity1_cadinality,
-                    state.entity2_entity1_ordinality);
-            document.querySelector('#output').innerHTML = diagram(state);
-        })
-        store.dispatch({
-            type: 'init'
-        });
-        $('body').on('change', '.input', function (event) {
-            console.log(event);
-            store.dispatch({
-                type: 'INPUT_CHANGE',
-                name: event.target.name,
-                value: event.target.value
+            var initStore = {
+                entity1: '엔티티1',
+                entity2: '엔티티2',
+                'entity1_entity2_cadinality': '1',
+                'entity1_entity2_ordinality': 'Mandatory',
+                'entity2_entity1_cadinality': '1',
+                'entity2_entity1_ordinality': 'Mandatory',
+                relation: '관계'
+            };
+            var reducer = function (state, action) {
+                if (action.type === 'init') {
+                    return initStore;
+                }
+                var newState = Object.assign({}, state);
+                if (action.type === 'INPUT_CHANGE') {
+                    newState[action.name] = action.value;
+                }
+                return newState;
+            }
+            var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window
+                .__REDUX_DEVTOOLS_EXTENSION__());
+            store.subscribe(function () {
+                var state = store.getState();
+                document.querySelector('#app').innerHTML =
+                    entity1_entity2(state.entity1, state.entity2, state.relation, state.entity1_entity2_cadinality,
+                        state.entity1_entity2_ordinality) +
+                    eneity2_entity1(state.entity1, state.entity2, state.relation, state.entity2_entity1_cadinality,
+                        state.entity2_entity1_ordinality);
+                document.querySelector('#output').innerHTML = diagram(state);
             })
-        })
+            store.dispatch({
+                type: 'init'
+            });
+            $('body').on('change', '.input', function (event) {
+                console.log(event);
+                store.dispatch({
+                    type: 'INPUT_CHANGE',
+                    name: event.target.name,
+                    value: event.target.value
+                })
+            })
+        </script>
+        <iframe style="border:rgb(194, 194, 194) 3px solid; margin-top:2rem;" width="640" height="360"
+            src="https://www.youtube.com/embed/ozQ2o8oJigc" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <div id='english'>
+        <header>
+            <h1>Entity Relational Diagram Helper</h1>
+            This is an educational app to check the cardinality and optionality of ERD. You can learn more about database modeling and the concept of ERD through the class below. 
+            <a href="https://opentutorials.org/module/4134">https://opentutorials.org/module/4134</a>
+        </header>
+        <p id="output-eng">
+        </p>
+        <div id="app-eng"></div>
+        <a class="fork" href="https://github.com/egoing/ERD-Helper" target="_blank">fork me on github</a>
+        <script>
+            function diagram(state) {
+                return `
+                    <input class="input" type="text" name="entity1" value=${state.entity1}>
+                    <select name="entity2_entity1_cadinality" class="input">
+                        <option ${state.entity2_entity1_cadinality === 'N' ? 'selected' : ''} value="N">&gt;</option>
+                        <option ${state.entity2_entity1_cadinality === '1' ? 'selected' : ''} value="1">-</option>
+                    </select>
+                    <select name="entity2_entity1_ordinality" class="input">
+                        <option ${state.entity2_entity1_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
+                        <option ${state.entity2_entity1_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
+                    </select>
+                    -
+                    <span>
+                        <input class="input" type="text" name="relation" value=${state.relation}>    
+                    </span>
+                    -
+                    <select name="entity1_entity2_ordinality" class="input">
+                        <option ${state.entity1_entity2_ordinality === 'Optional' ? 'selected' : ''} value="Optional">O</option>
+                        <option ${state.entity1_entity2_ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">|</option>
+                    </select>
+                    <select name="entity1_entity2_cadinality" class="input">
+                        <option ${state.entity1_entity2_cadinality === 'N' ? 'selected' : ''} value="N">&lt;</option>
+                        <option ${state.entity1_entity2_cadinality === '1' ? 'selected' : ''} value="1">-</option>
+                    </select>
+                    <input class="input" type="text" name="entity2" value=${state.entity2}>
+                    `;
+            }
+
+            function entity1_entity2(entity1, entity2, relation, cardinality, ordinality) {
+                return `
+                <p>
+                    <input class="input" type="text" name="entity1" value=${entity1}> has a
+                    <select class="input" name="entity1_entity2_ordinality" >
+                        <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">mandatory</option>
+                        <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">optional</option>
+                    </select>
+                    <input class="input" type="text" name="relation" value=${relation}>
+                    with <select class="input" name="entity1_entity2_cadinality">
+                        <option ${cardinality === '1' ? 'selected' : ''} value="1">one</option>
+                        <option ${cardinality === 'N' ? 'selected' : ''} value="N">many</option>
+                    </select>
+                    <input class="input" type="text" name="entity2" value=${entity2}>
+                </p>
+                `;
+            }
+
+            function eneity2_entity1(entity1, entity2, relation, cardinality, ordinality) {
+                return `
+                <p>
+                    <input class="input" type="text" name="entity1" value=${entity1}> has a
+                    <select class="input" name="entity1_entity2_ordinality" >
+                        <option ${ordinality === 'Mandatory' ? 'selected' : ''} value="Mandatory">mandatory</option>
+                        <option ${ordinality === 'Optional' ? 'selected' : ''} value="Optional">optional</option>
+                    </select>
+                    <input class="input" type="text" name="relation" value=${relation}>
+                    with <select class="input" name="entity1_entity2_cadinality">
+                        <option ${cardinality === '1' ? 'selected' : ''} value="1">one</option>
+                        <option ${cardinality === 'N' ? 'selected' : ''} value="N">many</option>
+                    </select>
+                    <input class="input" type="text" name="entity2" value=${entity2}>
+                </p>
+                `;
+            }
+            var initStore = {
+                entity1: 'Entity1',
+                entity2: 'Entity2',
+                'entity1_entity2_cadinality': '1',
+                'entity1_entity2_ordinality': 'Mandatory',
+                'entity2_entity1_cadinality': '1',
+                'entity2_entity1_ordinality': 'Mandatory',
+                relation: 'relationship'
+            };
+            var reducer = function (state, action) {
+                if (action.type === 'init') {
+                    return initStore;
+                }
+                var newState = Object.assign({}, state);
+                if (action.type === 'INPUT_CHANGE') {
+                    newState[action.name] = action.value;
+                }
+                return newState;
+            }
+            var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window
+                .__REDUX_DEVTOOLS_EXTENSION__());
+            store.subscribe(function () {
+                var state = store.getState();
+                document.querySelector('#app-eng').innerHTML =
+                    entity1_entity2(state.entity1, state.entity2, state.relation, state.entity1_entity2_cadinality,
+                        state.entity1_entity2_ordinality) +
+                    eneity2_entity1(state.entity1, state.entity2, state.relation, state.entity2_entity1_cadinality,
+                        state.entity2_entity1_ordinality);
+                document.querySelector('#output-eng').innerHTML = diagram(state);
+            })
+            store.dispatch({
+                type: 'init'
+            });
+            $('body').on('change', '.input', function (event) {
+                console.log(event);
+                store.dispatch({
+                    type: 'INPUT_CHANGE',
+                    name: event.target.name,
+                    value: event.target.value
+                })
+            })
+        </script>
+        <iframe style="border:rgb(194, 194, 194) 3px solid; margin-top:2rem;" width="640" height="360"
+            src="https://www.youtube.com/embed/ozQ2o8oJigc" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+    </div>
+    
+    <script>
+        function languageSelector() {
+            var selectedLanguage = document.getElementById("languageList").value;
+            if (selectedLanguage == 'english') {
+                document.getElementById("korean").style.display = 'none';
+                document.getElementById("english").style.display = 'block';
+            } else {
+                document.getElementById("english").style.display = 'none';
+                document.getElementById("korean").style.display = 'block';            
+            }
+        }
     </script>
-    <iframe style="border:rgb(194, 194, 194) 3px solid; margin-top:2rem;" width="640" height="360" src="https://www.youtube.com/embed/ozQ2o8oJigc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </body>
 
 </html>
